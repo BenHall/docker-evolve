@@ -1,0 +1,42 @@
+[
+	"web-1": {
+		"image": "wordpress",
+		"links": ["mysql-1"],
+		"map_directories": [
+			{"guest": "/var/www/html", host:"/Users/ben/Desktop/wordpress"} 
+		],
+		"environment": {
+			"WORDPRESS_DB_HOST": "mysql-1",
+			"WORDPRESS_DB_USER": "root",
+			"WORDPRESS_DB_NAME": "wordpress",
+			"WORDPRESS_DB_PASSWORD": "mysecretpassword"
+		}
+	},	
+	"mysql-1": {
+		"image": "mysql",
+		"map_directories": [
+			{"guest": "/data", host:"/Users/ben/Desktop/mysql/data"}
+		],
+		"environment": {
+			"MYSQL_DATABASE": "wordpress",
+			"MYSQL_ROOT_PASSWORD": "mysecretpassword"
+		}
+	},
+	"nginx_root": {
+		"image": "github.com/dockerfile/nginx",
+		"ports": [{"guest": 80, "expose": 80}],
+		"links": ["web-1"],
+		"map_directories": [
+			{"guest": "/data", host:"/Users/ben/Desktop/nginx/www"}
+			{"guest": "/etc/nginx/sites-enabled", host:"/Users/ben/Desktop/nginx/sites-enabled"}
+			{"guest": "/var/log/nginx", host:"/Users/ben/Desktop/nginx/logs"}
+		],
+		"config": [
+			{
+				"target": "web-1",
+				"domain": "localhost",
+				"ports": [{"guest": 80, "expose": 80}] //default
+			}
+		]
+	}
+]

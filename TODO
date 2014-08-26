@@ -1,0 +1,12 @@
+- Remove old containers with same name (auto remove when stopped? flag in config?)
+- Check that a mounted directory has permissions...
+- Pull logs for machines. At least output Ids
+
+=======================
+
+Interesting commands:
+
+	CID=$(docker run -d -v /var/run fooservice)
+	docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CID}
+
+	docker ps -a | grep 'weeks ago' | awk '{print $1}' | xargs docker rm

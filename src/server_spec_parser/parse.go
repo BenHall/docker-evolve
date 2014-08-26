@@ -15,7 +15,7 @@ type Container struct {
     BuildRequired bool `json:"build_required"`
     Ports []Port `json:"ports"`
     Links []string `json:"links"`
-    MapVolumes []MapVolume `json:"mapped_volumes"`
+    MappedVolumes []MappedVolume `json:"mapped_volumes"`
 }
 
 type Port struct {
@@ -23,7 +23,7 @@ type Port struct {
     Expose int `json:"expose"`
 }
 
-type MapVolume struct {
+type MappedVolume struct {
     Guest string `json:"guest"`
     Host string `json:"host"`
 }

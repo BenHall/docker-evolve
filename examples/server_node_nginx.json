@@ -1,46 +1,48 @@
-[
-    {
-        "container": "node-app-1",
-        "image": "github.com/BenHall/docker-node-example",
-        "build_required": true
-    },
-    {
-        "container": "nginx_root",
-        "image": "github.com/dockerfile/nginx",
-        "ports": [
-            {
-                "guest": 80,
-                "expose": 80
-            }
-        ],
-        "links": [
-            "node-app-1"
-        ],
-        "map_directories": [
-            {
-                "guest": "/data",
-                "host": "/Users/ben/Desktop/nginx/www"
-            },
-            {
-                "guest": "/etc/nginx/sites-enabled",
-                "host": "/Users/ben/Desktop/nginx/sites-enabled"
-            },
-            {
-                "guest": "/var/log/nginx",
-                "host": "/Users/ben/Desktop/nginx/logs"
-            }
-        ],
-        "config": [
-            {
-                "target": "node-app-1",
-                "domain": "localhost",
-                "ports": [
-                    {
-                        "guest": 3000,
-                        "expose": 80
-                    }
-                ]
-            }
-        ]
-    }
-]
+{"containers": 
+	[
+	    {
+	        "name": "node-app-1",
+	        "image": "github.com/BenHall/docker-node-example",
+	        "build_required": true
+	    },
+	    {
+	        "name": "nginx_root",
+	        "image": "github.com/dockerfile/nginx",
+	        "ports": [
+	            {
+	                "guest": 80,
+	                "expose": 80
+	            }
+	        ],
+	        "links": [
+	            "node-app-1"
+	        ],
+	        "mapped_volumes": [
+	            {
+	                "guest": "/data",
+	                "host": "/Users/ben/Desktop/nginx/www"
+	            },
+	            {
+	                "guest": "/etc/nginx/sites-enabled",
+	                "host": "/Users/ben/Desktop/nginx/sites-enabled"
+	            },
+	            {
+	                "guest": "/var/log/nginx",
+	                "host": "/Users/ben/Desktop/nginx/logs"
+	            }
+	        ],
+	        "config": [
+	            {
+	                "target": "node-app-1",
+	                "domain": "localhost",
+	                "ports": [
+	                    {
+	                        "guest": 3000,
+	                        "expose": 80
+	                    }
+	                ]
+	            }
+	        ]
+	    }
+	]
+}

@@ -21,7 +21,7 @@ func TestCreate_Returns_Build_And_Run_Command_For_Simple_Node(t *testing.T) {
 	cmds := Create(serverSpec)
 	assert.Equal(t, len(cmds), 2)
 	assert.Equal(t, cmds[0], "docker build -t test-node-1 test/node")
-	assert.Equal(t, cmds[1], "docker run -d --name test-node-1 test/node")
+	assert.Equal(t, cmds[1], "docker run -d --name test-node-1 test-node-1")
 }
 
 

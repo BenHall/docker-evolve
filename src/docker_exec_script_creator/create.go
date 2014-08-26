@@ -11,9 +11,12 @@ func Create(spec parser.ServerSpec) []string {
     for _, container := range spec.Containers {
     	if(container.BuildRequired == true) {
 			cmds = append(cmds, build_build_cmd(container))
+			container.Image = container.Name
+			cmds = append(cmds, build_run_cmd(container))
+    	} else {
+			cmds = append(cmds, build_run_cmd(container))
     	}
 
-		cmds = append(cmds, build_run_cmd(container))
 	}
 
 	return cmds

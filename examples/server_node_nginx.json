@@ -33,6 +33,7 @@
 	        ],
 	        "config": [
 	            {
+	            	"format": "nginx",
 	                "target": "node-app-1",
 	                "domain": "localhost",
 	                "ports": [

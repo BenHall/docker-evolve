@@ -5,24 +5,35 @@ import (
     "os"
     "flag"
     Parser "./server_spec_parser"
+    Docker "./docker_exec_script_creator"
 )
 
 var serverConfigFile = flag.String("config", "", "Server Configuration File")
 var serverTargetIpAddress = flag.String("ip", "", "IP of Target Server")
+var debug = flag.Bool("debug", false, "Debug Flag - Docker commands will be outputted instead of executed")
 
 func main() {
     flag.Parse()
 
     if(*serverConfigFile == "") {
-        fmt.Fprintf(os.Stderr, "Error: No server configuration provided \n")
-        os.Exit(1)
+        if(len(flag.Args()) == 0) {
+            fmt.Fprintf(os.Stderr, "Error: No server configuration provided \n")
+            os.Exit(1)
+        } else {
+            serverConfigFile = &flag.Args()[0]
+        }
     }
 
-
-    ServerSpec := &Parser.ServerSpec{}
-    err := ServerSpec.Parse(*serverConfigFile)
+    serverSpec := Parser.ServerSpec{}
+    err := serverSpec.Parse(*serverConfigFile)
     if err != nil { panic(err) }
 
 
-    fmt.Println(ServerSpec)
+    cmds := Docker.Create(serverSpec)
+    result := Execute(cmds, *debug)
+    if(result) {
+        os.Exit(0)
+    } else {
+        os.Exit(1)
+    }
 }

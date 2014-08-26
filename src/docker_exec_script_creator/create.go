@@ -32,6 +32,7 @@ func build_run_cmd(c parser.Container) string {
 	var links string
 	var ports string
 	var mapped_volumes string
+	var environment string
 
 	if(len(c.Links) > 0) {
 		links = create_links_section(c.Links)
@@ -42,8 +43,11 @@ func build_run_cmd(c parser.Container) string {
 	if(len(c.Ports) > 0) {
 		mapped_volumes = create_mapped_volumes_section(c.MappedVolumes)
 	}
+	if(len(c.EnvironmentVariables) > 0) {
+		environment = create_environment_section(c.EnvironmentVariables)
+	}
 
-	cmd := fmt.Sprintf("docker run -d %s%s%s%s%s", name, links, ports, mapped_volumes, c.Image)
+	cmd := fmt.Sprintf("docker run -d %s%s%s%s%s%s", name, links, ports, mapped_volumes, environment, c.Image)
 
 	return cmd
 }
@@ -73,6 +77,16 @@ func create_mapped_volumes_section(mapped_volumes []parser.MappedVolume) string 
 
     for _, m := range mapped_volumes {
     	cmd = fmt.Sprintf("%s-v %s:%s ", cmd, m.Host, m.Guest)
+	}
+
+	return cmd;
+}
+
+func create_environment_section(mapped_volumes []parser.EnvironmentVariable) string {
+    var cmd string
+
+    for _, m := range mapped_volumes {
+    	cmd = fmt.Sprintf("%s-e %s=%s ", cmd, m.Key, m.Value)
 	}
 
 	return cmd;

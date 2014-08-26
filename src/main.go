@@ -28,7 +28,6 @@ func main() {
     err := serverSpec.Parse(*serverConfigFile)
     if err != nil { panic(err) }
 
-
     cmds := Docker.Create(serverSpec)
     Execute(cmds, *debug)
     os.Exit(0)

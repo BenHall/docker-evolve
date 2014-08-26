@@ -6,10 +6,10 @@
 			{"guest": "/var/www/html", host:"/Users/ben/Desktop/wordpress"} 
 		],
 		"environment": {
-			"WORDPRESS_DB_HOST": "mysql-1",
-			"WORDPRESS_DB_USER": "root",
-			"WORDPRESS_DB_NAME": "wordpress",
-			"WORDPRESS_DB_PASSWORD": "mysecretpassword"
+			{key: "WORDPRESS_DB_HOST", value: "mysql-1"},
+			{key: "WORDPRESS_DB_USER", value: "root"},
+			{key: "WORDPRESS_DB_NAME", value: "wordpress"},
+			{key: "WORDPRESS_DB_PASSWORD", value: "mysecretpassword"}
 		}
 	},	
 	"mysql-1": {

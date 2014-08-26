@@ -24,7 +24,6 @@ func TestCreate_Returns_Build_And_Run_Command_For_Simple_Node(t *testing.T) {
 	assert.Equal(t, cmds[1], "docker run -d --name test-node-1 test-node-1")
 }
 
-
 func TestCreate_Returns_Run_Command_With_Linked_Containers_Mapped_Volumes(t *testing.T) {
 	container := parser.Container {
 		Name: "nginx",
@@ -43,3 +42,22 @@ func TestCreate_Returns_Run_Command_With_Linked_Containers_Mapped_Volumes(t *tes
 	assert.Equal(t, cmds[0], "docker run -d --name nginx --link web-app-1:web-app-1 -p 8080:80 -v /Users/root/Desktop/nginx/www:/data dockerfile/nginx")
 }
 
+func TestCreate_Returns_Run_Command_With_Environment_Variables(t *testing.T) {
+	container := parser.Container {
+		Name: "nginx",
+		Image: "dockerfile/nginx",
+		EnvironmentVariables: []parser.EnvironmentVariable { 
+			parser.EnvironmentVariable {Key: "WORDPRESS_DB_HOST", Value: "mysql"},
+			parser.EnvironmentVariable {Key: "WORDPRESS_DB_USER", Value: "root"},
+			parser.EnvironmentVariable {Key: "WORDPRESS_DB_NAME", Value: "wordpress"},
+		},
+	}
+
+	serverSpec := parser.ServerSpec{
+		Containers: []parser.Container { container },
+	}
+
+	cmds := Create(serverSpec)
+	assert.Equal(t, len(cmds), 1)
+	assert.Equal(t, cmds[0], "docker run -d --name nginx -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_NAME=wordpress dockerfile/nginx")
+}

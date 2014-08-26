@@ -16,6 +16,7 @@ type Container struct {
     Ports []Port `json:"ports"`
     Links []string `json:"links"`
     MappedVolumes []MappedVolume `json:"mapped_volumes"`
+    EnvironmentVariables []EnvironmentVariable `json:"environment"`
 }
 
 type Port struct {
@@ -26,6 +27,11 @@ type Port struct {
 type MappedVolume struct {
     Guest string `json:"guest"`
     Host string `json:"host"`
+}
+
+type EnvironmentVariable struct {
+    Key string `json:"key"`
+    Value string `json:"value"`
 }
 
 func (q *ServerSpec) Parse(file string) error {

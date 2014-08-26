@@ -7,7 +7,7 @@
 	    },
 	    {
 	        "name": "nginx_root",
-	        "image": "github.com/dockerfile/nginx",
+	        "image": "dockerfile/nginx",
 	        "ports": [
 	            {
 	                "guest": 80,

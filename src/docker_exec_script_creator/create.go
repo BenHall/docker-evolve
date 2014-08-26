@@ -3,17 +3,25 @@ package docker_exec_script_creator
 import (
 	"fmt"
 	parser "./../server_spec_parser"
+	nginx "./../config_creators/nginx"
 )
 
 func Create(spec parser.ServerSpec) []string {
 	var cmds []string
 
     for _, container := range spec.Containers {
+    	//TODO: This needs to be better. Not flexible enough to support build + config
     	if(container.BuildRequired == true) {
 			cmds = append(cmds, build_build_cmd(container))
 			container.Image = container.Name
 			cmds = append(cmds, build_run_cmd(container))
     	} else {
+
+			if(len(container.Config) > 0) {
+				config_cmds := nginx.Create(container, container.Config[0])
+				cmds = append(cmds, config_cmds...)
+			}
+			
 			cmds = append(cmds, build_run_cmd(container))
     	}
 
@@ -21,7 +29,6 @@ func Create(spec parser.ServerSpec) []string {
 
 	return cmds
 }
-
 
 func build_build_cmd(c parser.Container) string {
 	return fmt.Sprintf("docker build -t %s %s", c.Name, c.Image)

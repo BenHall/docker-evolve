@@ -61,3 +61,11 @@ func TestCreate_Returns_Run_Command_With_Environment_Variables(t *testing.T) {
 	assert.Equal(t, len(cmds), 1)
 	assert.Equal(t, cmds[0], "docker run -d --name nginx -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_NAME=wordpress dockerfile/nginx")
 }
+
+func TestCreate_Includes_nginx_Cmds_If_Required(t *testing.T) {
+    //Thinking about how to create json.RawMessage
+}
+
+
+
+

@@ -30,10 +30,6 @@ func main() {
 
 
     cmds := Docker.Create(serverSpec)
-    result := Execute(cmds, *debug)
-    if(result) {
-        os.Exit(0)
-    } else {
-        os.Exit(1)
-    }
+    Execute(cmds, *debug)
+    os.Exit(0)
 }

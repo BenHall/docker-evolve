@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"os/exec"
     "os"
 )
 
-func Execute(cmds []string, debug bool) bool {
+func Execute(cmds []string, debug bool) {
 	file, _ := WriteLinesToTempFile(cmds);
 	var app string
 	var args string
@@ -18,15 +17,8 @@ func Execute(cmds []string, debug bool) bool {
 		args = file
 	}
 
-	stdout, err := exec.Command(app, args).Output()
-
-	fmt.Printf("%s\n", stdout)
-	if (err != nil) {
-	   fmt.Printf("%s\n", err)
-	   fmt.Fprintln(os.Stderr, err)
-	   return false
-	}
-
-
-    return true
+	cmd := exec.Command(app, args)
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.Run()
 }

@@ -33,6 +33,7 @@
 		],
 		"config": [
 			{
+            	"format": "nginx",
 				"target": "web-1",
 				"domain": "localhost",
 				"ports": [{"guest": 80, "expose": 80}] //default

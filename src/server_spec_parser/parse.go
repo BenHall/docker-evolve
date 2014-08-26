@@ -17,6 +17,17 @@ type Container struct {
     Links []string `json:"links"`
     MappedVolumes []MappedVolume `json:"mapped_volumes"`
     EnvironmentVariables []EnvironmentVariable `json:"environment"`
+    Config []json.RawMessage `json:"config"`
+}
+
+func (c *Container) GetConfigFormat(config json.RawMessage) string {
+    var objmap map[string]*json.RawMessage
+    json.Unmarshal(config, &objmap)
+
+    var str string
+    json.Unmarshal(*objmap["format"], &str)
+
+    return str;
 }
 
 type Port struct {

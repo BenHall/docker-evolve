@@ -10,6 +10,9 @@ func Create(spec parser.ServerSpec) []string {
 	var cmds []string
 
     for _, container := range spec.Containers {
+    	cmds = append(cmds, build_env_cmd(container)...)
+    	
+
     	//TODO: This needs to be better. Not flexible enough to support build + config
     	if(container.BuildRequired == true) {
 			cmds = append(cmds, build_build_cmd(container))
@@ -47,7 +50,7 @@ func build_run_cmd(c parser.Container) string {
 	if(len(c.Ports) > 0) {
 		ports = create_ports_section(c.Ports)
 	}	
-	if(len(c.Ports) > 0) {
+	if(len(c.MappedVolumes) > 0) {
 		mapped_volumes = create_mapped_volumes_section(c.MappedVolumes)
 	}
 	if(len(c.EnvironmentVariables) > 0) {
@@ -100,5 +103,15 @@ func create_environment_section(mapped_volumes []parser.EnvironmentVariable) str
 }
 
 
+
+func build_env_cmd(c parser.Container) []string {
+    var cmds []string
+
+    for _, m := range c.MappedVolumes {
+    	cmds = append(cmds, fmt.Sprintf("mkdir -p %s", m.Host))
+	}
+
+	return cmds
+}
 
 

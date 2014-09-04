@@ -6,7 +6,9 @@ import (
 )
 
 type ServerSpec struct {
+    PreCommands []string  `json:"pre"`
     Containers []Container `json:"containers"`
+    PostCommands []string  `json:"post"`    
 }
 
 type Container struct {

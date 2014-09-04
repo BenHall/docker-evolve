@@ -85,6 +85,23 @@ func TestCreate_Includes_nginx_Cmds_If_Required(t *testing.T) {
     //Thinking about how to create json.RawMessage
 }
 
+func TestCreate_Returns_Pre_Post_Commands_ToExecute(t *testing.T) {
+	container := parser.Container {
+		Name: "test-node-1",
+		Image: "test/node",
+	}
 
+	serverSpec := parser.ServerSpec{
+		PreCommands: []string {"git clone something"},
+		Containers: []parser.Container { container },
+		PostCommands: []string {"extract data"},
+	}
+
+	cmds := Create(serverSpec)
+	assert.Equal(t, len(cmds), 3)
+	assert.Equal(t, cmds[0], "git clone something")
+	assert.Equal(t, cmds[1], "docker run -d --name test-node-1 test/node")
+	assert.Equal(t, cmds[2], "extract data")
+}
 
 

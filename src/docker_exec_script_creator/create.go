@@ -9,6 +9,8 @@ import (
 func Create(spec parser.ServerSpec) []string {
 	var cmds []string
 
+	cmds = append(cmds, spec.PreCommands...)
+
     for _, container := range spec.Containers {
     	cmds = append(cmds, build_env_cmd(container)...)
     	
@@ -27,8 +29,9 @@ func Create(spec parser.ServerSpec) []string {
 			
 			cmds = append(cmds, build_run_cmd(container))
     	}
-
 	}
+
+	cmds = append(cmds, spec.PostCommands...)
 
 	return cmds
 }

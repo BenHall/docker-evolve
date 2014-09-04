@@ -2,6 +2,7 @@ package docker_exec_script_creator
 
 import (
 	"fmt"
+	"strings"
 	parser "./../server_spec_parser"
 	nginx "./../config_creators/nginx"
 )
@@ -69,7 +70,11 @@ func create_links_section(links []string) string {
     var cmd string
 
     for _, l := range links {
-    	cmd = fmt.Sprintf("%s--link %s:%s ", cmd, l, l)
+    	if(strings.Contains(l, ":")) {
+    		cmd = fmt.Sprintf("%s--link %s ", cmd, l)
+		} else {
+    		cmd = fmt.Sprintf("%s--link %s:%s ", cmd, l, l)
+		}
 	}
 
 	return cmd;

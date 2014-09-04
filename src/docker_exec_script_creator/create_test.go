@@ -42,6 +42,21 @@ func TestCreate_Returns_Run_Command_With_Linked_Containers_Mapped_Volumes(t *tes
 	assert.Equal(t, cmds[1], "docker run -d --name nginx --link web-app-1:web-app-1 -p 8080:80 -v /Users/root/Desktop/nginx/www:/data dockerfile/nginx")
 }
 
+func TestCreate_Links_Can_Be_Defined_In_Server_Config(t *testing.T) {
+	container := parser.Container {
+		Name: "nginx",
+		Image: "dockerfile/nginx",
+		Links: []string { "web-app-1:node" },
+	}
+
+	serverSpec := parser.ServerSpec{
+		Containers: []parser.Container { container },
+	}
+
+	cmds := Create(serverSpec)
+	assert.Equal(t, len(cmds), 1)
+	assert.Equal(t, cmds[0], "docker run -d --name nginx --link web-app-1:node dockerfile/nginx")
+}
 
 func TestCreate_Includes_Command_To_Create_Directories_Mapped_Volumes(t *testing.T) {
 	container := parser.Container {
